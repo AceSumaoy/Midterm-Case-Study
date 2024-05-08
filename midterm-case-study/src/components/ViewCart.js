@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import "../../src/Styles.css";
 
 function ViewCart({ cart, removeFromCart, checkout }) {
@@ -9,12 +10,6 @@ function ViewCart({ cart, removeFromCart, checkout }) {
   const getTotalPriceForCart = () => {
     return cart.reduce((total, item) => {
       return total + calculateTotalPrice(item.price, item.quantity);
-    }, 0);
-  };
-
-  const getTotalItemsInCart = () => {
-    return cart.reduce((total, item) => {
-      return total + item.quantity;
     }, 0);
   };
 
@@ -29,30 +24,34 @@ function ViewCart({ cart, removeFromCart, checkout }) {
 
   const [showModal, setShowModal] = useState(false);
   const [shippingDetails, setShippingDetails] = useState({
-    fullName: "",
+    name: "",
     address: "",
     city: "",
     postalCode: "",
     country: ""
   });
-  const [amountGiven, setAmountGiven] = useState("");
+  const [amount, setAmountGiven] = useState("");
   const [change, setChange] = useState(0);
 
   const toggleModal = () => {
     setShowModal(!showModal);
   };
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
+    try {
+      const formData = {
+        ...shippingDetails,
+        amount: amount,
+        change: change.toFixed(2)
+      };
+      await axios.post('http://127.0.0.1:8000/api/checkout', formData);
+      console.log(formData);
+      toggleModal();
 
-    checkout(); 
-    toggleModal();
-    setShippingDetails({
-      fullName: "",
-      address: "",
-      city: ""
-    });
-    setAmountGiven("");
-    setChange(0);
+    } catch(error) {
+      console.error('Error sending form data:', error);
+      alert('Error sending form data');
+    }
   };
 
   const handleChange = (e) => {
@@ -108,8 +107,8 @@ function ViewCart({ cart, removeFromCart, checkout }) {
             <span className="close" onClick={toggleModal}>&times;</span>
             <h2>Checkout</h2>
             <form>
-              <label htmlFor="fullName">Full Name:</label>
-              <input type="text" id="fullName" name="fullName" value={shippingDetails.fullName} onChange={handleChange} />
+              <label htmlFor="name">Full Name:</label>
+              <input type="text" id="name" name="name" value={shippingDetails.name} onChange={handleChange} />
 
               <label htmlFor="address">Address:</label>
               <input type="text" id="address" name="address" value={shippingDetails.address} onChange={handleChange} />
@@ -117,14 +116,15 @@ function ViewCart({ cart, removeFromCart, checkout }) {
               <label htmlFor="city">City:</label>
               <input type="text" id="city" name="city" value={shippingDetails.city} onChange={handleChange} />
 
-              <label htmlFor="amountGiven">Amount Given:</label>
-              <input type="number" id="amountGiven" name="amountGiven" value={amountGiven} onChange={handleAmountGiven} />
+              <label htmlFor="amountn">Amount Given:</label>
+              <input type="number" id="amount" name="amount" value={amount} onChange={handleAmountGiven} />
 
               <label htmlFor="change">Change:</label>
               <input type="text" id="change" name="change" value={change.toFixed(2)} readOnly />
 
+              <button onClick={handleCheckout}>Complete Purchase</button>
             </form>
-            <button onClick={handleCheckout}>Complete Purchase</button>
+            
           </div>
         </div>
       )}
