@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class UpdateProdController extends Controller
 {
-    public function updateProduct(Request $request)
+    public function updateProduct(Request $request, $id)
     {
         // Validate the incoming request data
         $validatedData = $request->validate([
