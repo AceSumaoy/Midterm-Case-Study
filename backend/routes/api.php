@@ -10,7 +10,7 @@ use App\Http\Controllers\UpdateProdController;
 use App\Http\Controllers\ManageUserController;
 
 
-Route::get('/user', function (Request $request) {
+Route::get('/user', function (Request $request, $id) {
     return $request->user();
 })->middleware('auth:sanctum');
 
