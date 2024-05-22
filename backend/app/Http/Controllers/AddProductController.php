@@ -20,8 +20,7 @@ class AddProductController extends Controller
         $product = new Products();
         $product->name = $validatedData['name'];
         $product->price = $validatedData['price'];
-        $product->description = $validatedData['desc'];
-
+        $product->desc = $validatedData['desc'];
         $product->save();
 
         // Optionally, you can return a response if needed
