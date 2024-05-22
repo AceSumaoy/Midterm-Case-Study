@@ -8,28 +8,26 @@ use Illuminate\Support\Facades\Hash;
 
 class ManageUserController extends Controller
 {
-    // Display a listing of users.
-    public function index()
+    // Method to create a new user
+    public function createUser(Request $request)
     {
-        $users = User::all();
-        return response()->json($users);
-    }
-
-    public function store(Request $request)
-    {
+        // Validate the incoming request data
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-        ]);
-        //Add or Create User
-        $user = User::create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password']),
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
-        return response()->json($user, 201);
+        // Create a new user instance and save it to the database
+        $user = new User();
+        $user->name = $validatedData['name'];
+        $user->email = $validatedData['email'];
+        $user->password = Hash::make($validatedData['password']);
+
+        $user->save();
+
+        // Optionally, you can return a response if needed
+        return response()->json(['message' => 'User created successfully'], 201);
     }
 
     //resend
