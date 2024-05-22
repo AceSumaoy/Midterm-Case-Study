@@ -32,4 +32,6 @@ class ManageUserController extends Controller
         return response()->json($user, 201);
     }
 
+    //resend
+
 }
