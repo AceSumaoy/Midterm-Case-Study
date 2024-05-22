@@ -15,8 +15,15 @@ class UpdateProdController extends Controller
             'desc' => 'required|string',
         ]);
 
+        //Find Prod ID
+        $product = Products::find($id);
+
+        //Check if prod exists
+        if(!$product){
+            return response()->json(['message' => 'Product not found'], 404);
+        }
+
         // Create a new product instance and save it to the database
-        $product = new Products();
         $product->name = $validatedData['name'];
         $product->price = $validatedData['price'];
         $product->desc = $validatedData['desc'];

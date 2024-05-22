@@ -16,4 +16,8 @@ Route::get('/user', function (Request $request) {
 
 Route::apiResource("/products", ProductController::class);
 Route::post('/checkout', [CartController::class, 'checkout']);
+Route::post('/products', [AddProductController::class, 'products']);
+Route::post('/products', [RemoveProdController::class, 'products']);
+Route::post('/products', [UpdateProdController::class, 'products']);
+Route::post('/user', [ManageUserController::class, 'user']);
 
