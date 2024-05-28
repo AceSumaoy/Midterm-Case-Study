@@ -13,12 +13,8 @@ Route::get('/user', function (Request $request) {
 
 Route::apiResource("/products", ProductController::class);
 Route::post('/checkout', [CartController::class, 'checkout']);
-<<<<<<< Updated upstream
-Route::post('/products', [AddProductController::class, 'products']);
-=======
 Route::post('/products', [ProductController::class, 'addProduct']);
 Route::put('/products/{id}', [ProductController::class, 'updateProduct']);
 Route::delete('/products/{id}', [ProductController::class, 'destroy']);
->>>>>>> Stashed changes
 Route::post('/user', [ManageUserController::class, 'user']);
 

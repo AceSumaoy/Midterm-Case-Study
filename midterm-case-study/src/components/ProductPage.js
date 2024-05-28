@@ -1,46 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ViewCart from "./ViewCart";
 import Modal from "./Modal";
-import axios from "axios";
-import { useEffect } from "react";
 import "../../src/Styles.css";
 import { fetchProducts } from '../api';
 
 function ProductPage() {
-  const [products, setProducts] = useState(null);
+  const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
   const [showCart, setShowCart] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-  useEffect(() => {
-    const getProducts = async (url) => {
-      try {
-        const fetch = await axios.get(url);
-        setProducts(fetch.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getProducts("http://127.0.0.1:8000/api/products");
-  }, []);
 
   useEffect(() => {
-<<<<<<< Updated upstream
-    const getProducts = async (url) => {
-      try {
-        const fetch = await axios.get(url);
-        setProducts(fetch.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getProducts("http://127.0.0.1:8000/api/products");
-=======
     fetchProducts()
       .then(response => setProducts(response.data))
       .catch(error => console.error('Error fetching products:', error));
->>>>>>> Stashed changes
   }, []);
 
   const addToCart = (product) => {
@@ -55,8 +28,8 @@ function ProductPage() {
       setCart((prevCart) => [...prevCart, { ...product, quantity: 1 }]);
     }
 
-    setShowPopup(true); // Show the popup when an item is added to the cart
-    setTimeout(() => setShowPopup(false), 2000); // Hide the popup after 2 seconds
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 2000);
   };
 
   const removeFromCart = (productId, decrement = false) => {
@@ -76,8 +49,8 @@ function ProductPage() {
   };
 
   const checkout = () => {
-    console.log(cart);
-    setCart([]);
+    console.log(cart); // Perform checkout logic here
+    setCart([]); // Clear the cart after checkout
   };
 
   return (
@@ -102,17 +75,12 @@ function ProductPage() {
         {products?.map((product) => (
           <div key={product.id} className="product-card">
             <h3>{product.name}</h3>
-<<<<<<< Updated upstream
-            <p>{product.desc}</p>
-=======
             <p>{product.desc}</p> {/* Ensure 'desc' matches your database field */}
->>>>>>> Stashed changes
             <button onClick={() => addToCart(product)}>Add to Cart</button>
           </div>
         ))}
       </div>
 
-      {/* Popup Modal */}
       {showPopup && (
         <Modal onClose={() => setShowPopup(false)}>
           <div className="popup">
