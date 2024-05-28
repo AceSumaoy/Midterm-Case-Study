@@ -13,9 +13,6 @@ class ProductController extends Controller
         $products = Products::all();
         return response()->json($products);
     }
-<<<<<<< Updated upstream
-}
-=======
     public function addProduct(Request $request)
     {
         // Validate the incoming request data
@@ -74,4 +71,3 @@ class ProductController extends Controller
     }
 
 }
->>>>>>> Stashed changes

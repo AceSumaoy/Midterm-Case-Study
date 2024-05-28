@@ -8,6 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Checkout extends Model
 {
     use HasFactory;
-    
     protected $fillable = ['name', 'address', 'city', 'amount', 'change'];
 }
