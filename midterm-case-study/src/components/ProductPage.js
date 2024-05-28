@@ -4,6 +4,7 @@ import Modal from "./Modal";
 import axios from "axios";
 import { useEffect } from "react";
 import "../../src/Styles.css";
+import { fetchProducts } from '../api';
 
 function ProductPage() {
   const [products, setProducts] = useState(null);
@@ -24,6 +25,7 @@ function ProductPage() {
   }, []);
 
   useEffect(() => {
+<<<<<<< Updated upstream
     const getProducts = async (url) => {
       try {
         const fetch = await axios.get(url);
@@ -34,6 +36,11 @@ function ProductPage() {
     };
 
     getProducts("http://127.0.0.1:8000/api/products");
+=======
+    fetchProducts()
+      .then(response => setProducts(response.data))
+      .catch(error => console.error('Error fetching products:', error));
+>>>>>>> Stashed changes
   }, []);
 
   const addToCart = (product) => {
@@ -95,7 +102,11 @@ function ProductPage() {
         {products?.map((product) => (
           <div key={product.id} className="product-card">
             <h3>{product.name}</h3>
+<<<<<<< Updated upstream
             <p>{product.desc}</p>
+=======
+            <p>{product.desc}</p> {/* Ensure 'desc' matches your database field */}
+>>>>>>> Stashed changes
             <button onClick={() => addToCart(product)}>Add to Cart</button>
           </div>
         ))}
