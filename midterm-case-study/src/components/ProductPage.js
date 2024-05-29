@@ -1,19 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ViewCart from "./ViewCart";
 import Modal from "./Modal";
+import axios from "axios";
+import { useEffect } from "react";
 import "../../src/Styles.css";
-import { fetchProducts } from '../api';
 
 function ProductPage() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(null);
   const [cart, setCart] = useState([]);
   const [showCart, setShowCart] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
-
   useEffect(() => {
-    fetchProducts()
-      .then(response => setProducts(response.data))
-      .catch(error => console.error('Error fetching products:', error));
+    const getProducts = async (url) => {
+      try {
+        const fetch = await axios.get(url);
+        setProducts(fetch.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getProducts("http://127.0.0.1:8000/api/products");
   }, []);
 
   const addToCart = (product) => {
@@ -28,8 +35,8 @@ function ProductPage() {
       setCart((prevCart) => [...prevCart, { ...product, quantity: 1 }]);
     }
 
-    setShowPopup(true);
-    setTimeout(() => setShowPopup(false), 2000);
+    setShowPopup(true); // Show the popup when an item is added to the cart
+    setTimeout(() => setShowPopup(false), 2000); // Hide the popup after 2 seconds
   };
 
   const removeFromCart = (productId, decrement = false) => {
@@ -49,8 +56,8 @@ function ProductPage() {
   };
 
   const checkout = () => {
-    console.log(cart); // Perform checkout logic here
-    setCart([]); // Clear the cart after checkout
+    console.log(cart);
+    setCart([]);
   };
 
   return (
@@ -75,12 +82,13 @@ function ProductPage() {
         {products?.map((product) => (
           <div key={product.id} className="product-card">
             <h3>{product.name}</h3>
-            <p>{product.desc}</p> {/* Ensure 'desc' matches your database field */}
-            <button onClick={() => addToCart(products)}>Add to Cart</button>
+            <p>{product.desc}</p>
+            <button onClick={() => addToCart(product)}>Add to Cart</button>
           </div>
         ))}
       </div>
 
+      {/* Popup Modal */}
       {showPopup && (
         <Modal onClose={() => setShowPopup(false)}>
           <div className="popup">
