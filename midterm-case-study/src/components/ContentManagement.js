@@ -3,7 +3,7 @@ import AddProduct from './AddProduct';
 import EditProduct from './EditProduct';
 import DeleteProduct from './DeleteProduct';
 import "../../src/Styles.css";
-import { fetchProducts, addProduct, removeProduct, updateProduct } from '../api';
+import { fetchProducts, removeProduct, updateProduct } from '../api';
 
 function ContentManagement({ onLogout }) {
   const [products, setProducts] = useState([]);
