@@ -41,12 +41,9 @@ function ContentManagement({ onLogout }) {
   };
 
   const handleAddNewProduct = (newProduct) => {
-    addProduct(newProduct)
-      .then(response => {
-        setProducts([...products, response.data]);
-        setShowAddModal(false);
-      })
-      .catch(error => console.error('Error adding product:', error));
+      // Assuming the newProduct has an id property added by the backend
+      setProducts([...products, newProduct]); // Add the new product directly to the state
+      setShowAddModal(false);
   };
 
   const handleLogout = () => {
@@ -58,7 +55,7 @@ function ContentManagement({ onLogout }) {
     <div className="product-card">
       <h3>{product.name}</h3>
       <p>Price: {product.price}</p>
-      <p>{product.description}</p>
+      <p>{product.desc}</p>
       <DeleteProduct product={product} onDelete={() => handleRemoveProduct(product.id)} />
       <button onClick={() => {
         setEditingProduct(product);

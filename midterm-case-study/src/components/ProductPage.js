@@ -76,7 +76,7 @@ function ProductPage() {
           <div key={product.id} className="product-card">
             <h3>{product.name}</h3>
             <p>{product.desc}</p> {/* Ensure 'desc' matches your database field */}
-            <button onClick={() => addToCart(product)}>Add to Cart</button>
+            <button onClick={() => addToCart(products)}>Add to Cart</button>
           </div>
         ))}
       </div>
